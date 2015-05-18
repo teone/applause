@@ -18,11 +18,27 @@ applause.directive('slide', function($document, $localStorage,$rootScope, Appdat
         Appdata.slides.push(count);
         count += 1;
 
-        // console.log(attr);
+        scope.missingSteps = parseInt(attr.steps);
 
-        // Triggering global event for navigation
         if(scope.n === $localStorage.currentSlide){
           $document.bind('keydown', function(keyEvent){
+
+            console.log(scope.missingSteps);
+            // Local Navigation
+            if(scope.missingSteps){
+              switch(keyEvent.keyCode){
+                case 37:
+                  scope.missingSteps += 1;
+                  break;
+                case 32:
+                case 39:
+                  scope.missingSteps -= 1;
+                  break;
+              }
+              return;
+            }
+
+            // Triggering global event for navigation
             switch(keyEvent.keyCode) {
               case 27:
                 $rootScope.$emit('slide.showGoTo', keyEvent);
